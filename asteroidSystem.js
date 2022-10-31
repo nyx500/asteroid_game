@@ -8,6 +8,7 @@ class AsteroidSystem {
     this.diams = [];
     // initally sets the probability that an asteroid will spawn to 0.01
     this.probabilityOfSpawning = 0.01;
+    this.difficulty = 1;
   }
 
   run() {
@@ -36,6 +37,8 @@ class AsteroidSystem {
     {
       // min function limits the top probability of asteroid spawning to 0.1
       this.probabilityOfSpawning = min(this.probabilityOfSpawning += 0.01, 0.1);
+      // flag to print new difficulty on screen
+      this.difficulty++;
     }
   }
 

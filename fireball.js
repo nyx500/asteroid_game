@@ -40,7 +40,7 @@ class Fireball {
     move()
     {   
         // makes the fireball shake a bit left to right
-        this.location.x += random(-2, 2);
+        this.location.x += random(-3, 3);
         // moves the fireball down the canvas
         this.location.y += random(2, 5);
     }

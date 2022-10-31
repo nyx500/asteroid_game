@@ -31,10 +31,10 @@ function draw() {
 
   drawEarth();
   displayScore();
+  displayDifficulty(asteroids);
   
   checkCollisions(spaceship, asteroids); // function that checks collision between various elements
-  // function preventing scrolling down when firing
-  stopScrollWhenFire();
+
 }
 
 //////////////////////////////////////////////////
@@ -56,6 +56,16 @@ function displayScore()
   textStyle(BOLD);
   fill(200, 0, 0);
   text("Score: " + score, width * 0.01, height * 0.04);
+}
+
+// writes the current difficulty on top-right hand corner of the canvas
+function displayDifficulty(asteroids)
+{
+  console.log(asteroids.difficulty);
+  textSize(22);
+  textStyle(BOLD);
+  fill(0, 230, 0);
+  text("Difficulty: " + asteroids.difficulty, width * 0.85, height * 0.04);
 }
 
 //////////////////////////////////////////////////
@@ -84,11 +94,14 @@ function checkCollisions(spaceship, asteroids){
 
       // More precise collision detection:
       // Checks if spaceship's vertex is within circle
+      // Makes the diameter of the asteroid in inInside() a bit smaller,
+      // because the game over text was coming up when the
+      // two objects hadn't quite collided
       for (var j = 0; j < spaceship.vertices.length; j++)
       {
         if (isInside(
           asteroids.locations[i],
-          asteroids.diams[i],
+          asteroids.diams[i] - 2,
           spaceship.vertices[j],
           0
         ) ||
@@ -98,7 +111,7 @@ function checkCollisions(spaceship, asteroids){
         */
         (isInside(
           asteroids.locations[i],
-          asteroids.diams[i],
+          asteroids.diams[i] - 2,
           spaceship.midpoints[j],
           0)
         ))
@@ -194,6 +207,8 @@ function gameOver(){
   textSize(80);
   textAlign(CENTER);
   text("GAME OVER", width/2, height/2)
+  fill(255, 0, 0);
+  text("Your score: " + score, width/2, height/2 + 100);
   noLoop();
 }
 
@@ -211,15 +226,4 @@ function sky(){
 
   if (random(1)<0.3) starLocs.splice(int(random(starLocs.length)),1);
   pop();
-}
-
-function stopScrollWhenFire()
-{
-  document.onkeydown = function (event)
-  {
-    if (event.key = " ")
-    {
-      event.preventDefault();
-    }
-  }
 }
