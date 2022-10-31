@@ -57,7 +57,7 @@ class AsteroidSystem {
   //draws all asteroids
   draw() {  
     noStroke(); 
-    fill(200);
+    fill(92, 64, 51);
     for (var i = 0; i < this.locations.length; i++) {
       ellipse(this.locations[i].x, this.locations[i].y, this.diams[i], this.diams[i]);
     }

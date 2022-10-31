@@ -33,6 +33,8 @@ function draw() {
   displayScore();
   
   checkCollisions(spaceship, asteroids); // function that checks collision between various elements
+  // function preventing scrolling down when firing
+  stopScrollWhenFire();
 }
 
 //////////////////////////////////////////////////
@@ -209,4 +211,15 @@ function sky(){
 
   if (random(1)<0.3) starLocs.splice(int(random(starLocs.length)),1);
   pop();
+}
+
+function stopScrollWhenFire()
+{
+  document.onkeydown = function (event)
+  {
+    if (event.key = " ")
+    {
+      event.preventDefault();
+    }
+  }
 }
