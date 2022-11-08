@@ -61,7 +61,6 @@ function displayScore()
 // writes the current difficulty on top-right hand corner of the canvas
 function displayDifficulty(asteroids)
 {
-  console.log(asteroids.difficulty);
   textSize(22);
   textStyle(BOLD);
   fill(0, 230, 0);

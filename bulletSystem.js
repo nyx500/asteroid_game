@@ -10,6 +10,8 @@ class BulletSystem {
       this.move();
       this.draw();
       this.edges();
+      
+    console.log(this.bullets.length);
   }
 
   fire(x, y){
@@ -35,12 +37,16 @@ class BulletSystem {
   edges(){
       // YOUR CODE HERE (3 lines approx)
       // Checks each bullet to see if it has left the screen
-      for (var i = this.bullets.length - 1; i >= 0; i--)
+      for (var i = 0; i < this.bullets.length; i++)
       {
         // If the bullet has left the screen, removes it from the bullets arrays
-        if (this.bullets[i].y < 0)
+        if (this.bullets[i].y < 0 
+          || this.bullets[i].x < 0 ||
+           this.bullets[i].x > width
+          )
         {
           this.bullets.splice(i, 1);
+          i--;
         }
       }
   }

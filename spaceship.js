@@ -7,7 +7,7 @@ class Spaceship {
     this.maxVelocity = 5;
     this.bulletSys = new BulletSystem();
     this.size = 50;
-    // array storing fireball objects which create the rocket's exhaust
+    // array storing fireball objects which create the rocket's thrusters
     this.fireballs = [];
     /** array of the triangle's vertices, which enables better
     triangle-circle collision detection:
@@ -56,7 +56,7 @@ class Spaceship {
 
     /** draws the exhaust/fire coming out from the bottom of the spaceship:
     has to come before the spaceship is drawn, so it comes out from behind**/
-    this.displaySpaceshipExhaust();
+    this.displaySpaceshipThrusters();
 
     fill(125);
     // draws the grey body of the spaceship
@@ -89,46 +89,92 @@ class Spaceship {
   }
 
   interaction() {
+    /* passes in the opposite of the spaceship's direction into the
+    addFireballs function to create the thrusters on the opposite side */
     if (keyIsDown(LEFT_ARROW)) {
       this.applyForce(createVector(-0.1, 0));
-      this.addFireballs();
+      this.addFireballs("right");
     }
     if (keyIsDown(RIGHT_ARROW)) {
       // YOUR CODE HERE (1 line)
       this.applyForce(createVector(0.1, 0));
-      this.addFireballs();
+      this.addFireballs("left");
     }
     if (keyIsDown(UP_ARROW)) {
       // YOUR CODE HERE (1 line)
       this.applyForce(createVector(0, -0.1));
-      this.addFireballs();
+      this.addFireballs("down");
     }
     if (keyIsDown(DOWN_ARROW)) {
       // YOUR CODE HERE (1 line)
       this.applyForce(createVector(0, 0.1));
+      this.addFireballs("up");
     }
   }
 
   // draws all the fireballs coming out of the spaceship at the bottom
-  displaySpaceshipExhaust() {
+  displaySpaceshipThrusters() {
     // iterates over the fireballs array
-    for (var i = this.fireballs.length - 1; i >= 0; i--) {
+    for (var i = 0; i < this.fireballs.length; i++) {
       // draws and updates each fireball
       this.fireballs[i].run();
-      // if a fireball has shrunk too much, remove it from the array
+      // if a fireball has shrunk to radius < 0.1, remove it from the array
       if (this.fireballs[i].size < 0.1) {
         this.fireballs.splice(i, 1);
+        i--;
       }
     }
   }
 
   // populates the this.fireballs array with new Fireball objects
-  addFireballs() {
+  addFireballs(direction) {
+    var xoff;
+    var yoff;
     for (var i = 0; i < 50; i++) {
-      // creates some randomness in fireball's starting position
-      var yoff = random(10, this.size / 2);
-      this.fireballs.push(new Fireball(this.location.x,
-        this.location.y + yoff));
+      // adds a new Fireball into the fireballs array
+      // inputs the correct direction into the Fireball constructor
+      // direction of fireballs is based on direction of the spaceship
+      // possible directions:'R' (right), 'L' (left), 'D' (down), 'U' (up)
+      switch (direction) {
+        case "right":
+          xoff = 5;
+          yoff = 8;
+          this.fireballs.push(new Fireball(this.location.x + xoff,
+            this.location.y + yoff, 'R'));
+          this.fireballs.push(new Fireball(this.location.x + xoff,
+            this.location.y - yoff, 'R'));
+          break;
+
+        case "left":
+          xoff = -5;
+          yoff = 8;
+          this.fireballs.push(new Fireball(this.location.x + xoff,
+            this.location.y + yoff, 'L'));
+          this.fireballs.push(new Fireball(this.location.x + xoff,
+            this.location.y - yoff, 'L'));
+          break;
+
+        case "down":
+          xoff = -10;
+          yoff = 5;
+          this.fireballs.push(new Fireball(this.location.x + xoff,
+            this.location.y + yoff, 'D'));
+          this.fireballs.push(new Fireball(this.location.x - xoff,
+            this.location.y + yoff, 'D'));
+          break;
+
+        case "up":
+          xoff = 10;
+          yoff = -5;
+          this.fireballs.push(new Fireball(this.location.x - xoff,
+            this.location.y + yoff, 'U'));
+          this.fireballs.push(new Fireball(this.location.x + xoff,
+            this.location.y + yoff, 'U'));
+          break;
+        
+        default:
+          console.log("Error: Have to input correct direction as argument.");
+      }
     }
   }
 
